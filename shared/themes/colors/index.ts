@@ -1,0 +1,10 @@
+export const bgDefaultColor = "#F7F7F7";
+export const primaryGrey = "#707070";
+export const secondaryGrey = "#868686";
+export const defaultGreen = "#27C383";
+export const defaultOrange = "#B5C401";
+export const bgAccentColor = "#F4F4F4";
+export const placeholderColor = "#9D9D9D";
+export const borderColor = "#EBEBEB";
+export const forgotPasswordColor = "#C1C1C1";
+export const borderFormColor = "#dddddddd";

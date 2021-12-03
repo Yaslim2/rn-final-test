@@ -1,21 +1,33 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import { StatusBar } from "expo-status-bar";
+import { fetchFonts } from "./shared/helpers";
+import { NavigationContainer } from "@react-navigation/native";
+import { Provider } from "react-redux";
+import Routes from "./routes";
+import AppLoading from "expo-app-loading";
+import store from "./store";
 
-export default function App() {
+const App: React.FC = () => {
+  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
+
+  if (!fontLoaded) {
+    return (
+      <AppLoading
+        startAsync={fetchFonts}
+        onFinish={() => setFontLoaded(true)}
+        onError={() => console.log("Error on fetching fonts!")}
+      />
+    );
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Routes />
+        <StatusBar style="auto" />
+      </NavigationContainer>
+    </Provider>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
