@@ -44,6 +44,28 @@ const initialState: AuthSliceState = {
   user: null,
 };
 
+export const asyncChangePassword = (
+  token: string,
+  password: string
+): AppThunk => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      await fetch(`${api}/reset/${token}`, {
+        method: "POST",
+        body: JSON.stringify({
+          password,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      });
+    } catch (e: any) {
+      throw new Error(e.message);
+    }
+  };
+};
+
 export const asyncLoginUser = (email: string, password: string): AppThunk => {
   return async (dispatch: AppDispatch) => {
     try {
@@ -142,9 +164,12 @@ const authSlice = createSlice({
         games: [],
       };
     },
+    logout: (state) => {
+      state.user = null;
+    },
   },
 });
 
-export const { setUser } = authSlice.actions;
+export const { setUser, logout } = authSlice.actions;
 
 export default authSlice.reducer;

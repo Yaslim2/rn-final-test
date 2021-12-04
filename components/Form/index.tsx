@@ -22,11 +22,12 @@ const Form: React.FC<{
   onResetPassword?: () => void;
   isSignUp?: boolean;
   isResetPassword?: boolean;
+  isNewPassword?: boolean;
 }> = (props) => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { isResetPassword, isSignUp, onResetPassword } = props;
+  const { isResetPassword, isSignUp, onResetPassword, isNewPassword } = props;
   const handleSubmitForm = () => {
     Keyboard.dismiss();
     if (
@@ -34,6 +35,7 @@ const Form: React.FC<{
         isResetPassword,
         isSignUp,
         isSignIn: !!onResetPassword,
+        isNewPassword,
         email,
         name,
         password,
@@ -45,6 +47,22 @@ const Form: React.FC<{
   };
 
   let inputs;
+
+  if (props.isNewPassword) {
+    inputs = (
+      <TextInputArea>
+        <Input
+          underlineColorAndroid="transparent"
+          secureTextEntry={true}
+          placeholder="Password"
+          value={password}
+          onChangeText={(text) => {
+            setPassword(text);
+          }}
+        />
+      </TextInputArea>
+    );
+  }
 
   if (!!props.onResetPassword) {
     inputs = (
@@ -83,12 +101,11 @@ const Form: React.FC<{
       <TextInputArea>
         <Input
           underlineColorAndroid="transparent"
-          secureTextEntry={true}
-          value={password}
+          value={email}
           onChangeText={(text) => {
-            setPassword(text);
+            setEmail(text);
           }}
-          placeholder="Password"
+          placeholder="Email"
         />
       </TextInputArea>
     );
@@ -143,6 +160,7 @@ const Form: React.FC<{
               {props.isSignUp && "Register"}
               {props.isResetPassword && "Send link"}
               {props.onResetPassword && "Log in"}
+              {props.isNewPassword && "Change"}
             </MainButton>
           </MainButtonArea>
         </FormContainer>

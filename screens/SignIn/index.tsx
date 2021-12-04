@@ -17,7 +17,6 @@ const SignIn = (
   const handleSubmit = async (fields: {
     email?: string;
     password?: string;
-    name?: string;
   }) => {
     try {
       await dispatch(asyncLoginUser(fields.email!, fields.password!));
