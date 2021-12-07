@@ -23,11 +23,18 @@ const Form: React.FC<{
   isSignUp?: boolean;
   isResetPassword?: boolean;
   isNewPassword?: boolean;
+  isUpdateAccount?: boolean;
 }> = (props) => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { isResetPassword, isSignUp, onResetPassword, isNewPassword } = props;
+  const {
+    isResetPassword,
+    isSignUp,
+    onResetPassword,
+    isNewPassword,
+    isUpdateAccount,
+  } = props;
   const handleSubmitForm = () => {
     Keyboard.dismiss();
     if (
@@ -36,6 +43,7 @@ const Form: React.FC<{
         isSignUp,
         isSignIn: !!onResetPassword,
         isNewPassword,
+        isUpdateAccount,
         email,
         name,
         password,
@@ -44,9 +52,41 @@ const Form: React.FC<{
       return;
     }
     props.onSubmit({ name, email, password });
+
+    setName("");
+    setEmail("");
+    setPassword("");
   };
 
   let inputs;
+
+  if (props.isUpdateAccount) {
+    inputs = (
+      <>
+        <TextInputArea>
+          <Input
+            underlineColorAndroid="transparent"
+            placeholder="Name"
+            value={name}
+            onChangeText={(text) => {
+              setName(text);
+            }}
+          />
+        </TextInputArea>
+        <TextInputArea>
+          <Input
+            underlineColorAndroid="transparent"
+            placeholder="Email"
+            keyboardType="email-address"
+            value={email}
+            onChangeText={(text) => {
+              setEmail(text);
+            }}
+          />
+        </TextInputArea>
+      </>
+    );
+  }
 
   if (props.isNewPassword) {
     inputs = (
@@ -161,6 +201,7 @@ const Form: React.FC<{
               {props.isResetPassword && "Send link"}
               {props.onResetPassword && "Log in"}
               {props.isNewPassword && "Change"}
+              {props.isUpdateAccount && "Update"}
             </MainButton>
           </MainButtonArea>
         </FormContainer>

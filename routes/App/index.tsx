@@ -1,7 +1,7 @@
 import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Account, Home, NewBet } from "../../screens";
+import { Account, Cart, Home, NewBet } from "../../screens";
 import {
   primaryGrey,
   PoppinsBold,
@@ -9,10 +9,12 @@ import {
   PoppinsItalicRegular,
 } from "../../shared/themes";
 import { Ionicons } from "@expo/vector-icons";
+import { drawerBgColor, bgDefaultColor } from "../../shared/themes";
 
 export type RootBetStackNavigator = {
   Home: undefined;
   NewBet: undefined;
+  Cart: undefined;
 };
 
 export type RootAppDrawerNavigator = {
@@ -38,8 +40,9 @@ const BetNavigator = () => {
           fontSize: 20,
         },
         headerStyle: {
-          backgroundColor: "#f7f7f7",
+          backgroundColor: bgDefaultColor,
         },
+        headerShown: false,
       }}
     >
       <BetStack.Screen
@@ -58,10 +61,12 @@ const BetNavigator = () => {
                 />
               );
             },
+            title: "Recent games",
           };
         }}
       />
-      <BetStack.Screen component={NewBet} name="New Bet" />
+      <BetStack.Screen component={NewBet} name="NewBet" />
+      <BetStack.Screen component={Cart} name="Cart" />
     </BetStack.Navigator>
   );
 };
@@ -78,8 +83,9 @@ const AccountNavigator = () => {
           fontSize: 20,
         },
         headerStyle: {
-          backgroundColor: "#f7f7f7",
+          backgroundColor: bgDefaultColor,
         },
+        headerShown: false,
       }}
     >
       <AccountStack.Screen
@@ -98,6 +104,7 @@ const AccountNavigator = () => {
                 />
               );
             },
+            title: "Update account",
           };
         }}
       />
@@ -112,7 +119,7 @@ const AppNavigator = () => {
         headerShown: false,
         drawerActiveTintColor: primaryGrey,
         drawerLabelStyle: { fontFamily: PoppinsBold },
-        drawerContentStyle: { backgroundColor: "#fdd8d8" },
+        drawerContentStyle: { backgroundColor: drawerBgColor },
       }}
     >
       <AppDrawer.Screen

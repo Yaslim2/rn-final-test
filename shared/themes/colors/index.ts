@@ -8,3 +8,5 @@ export const placeholderColor = "#9D9D9D";
 export const borderColor = "#EBEBEB";
 export const forgotPasswordColor = "#C1C1C1";
 export const borderFormColor = "#dddddddd";
+export const drawerBgColor = "#fdd8d8";
+export const ballColor = "#ADC0C4";

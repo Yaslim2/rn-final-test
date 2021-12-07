@@ -7,10 +7,18 @@ import { primaryGrey } from "../../shared/themes";
 import { logout } from "../../store/slices/authSlice";
 import { useDispatch } from "react-redux";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import MainButton from "../../components/MainButton";
+
 const Home = (props: NativeStackScreenProps<RootBetStackNavigator, "Home">) => {
   const dispatch = useDispatch();
 
-  const handleLogout = () => {
+  const handleNewBet = () => {
+    props.navigation.navigate("NewBet");
+  };
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem("@token");
     dispatch(logout());
   };
 
@@ -26,11 +34,15 @@ const Home = (props: NativeStackScreenProps<RootBetStackNavigator, "Home">) => {
           />
         );
       },
-      title: "Recents games",
+      headerShown: true,
     });
   }, []);
 
-  return <View />;
+  return (
+    <View>
+      <MainButton onPress={handleNewBet}>New bet</MainButton>
+    </View>
+  );
 };
 
 export default Home;

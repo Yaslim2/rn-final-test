@@ -13,12 +13,6 @@ export const Container = styled.View`
   align-items: center;
 `;
 
-export const ScrollContainer = styled.ScrollView`
-  width: 100%;
-  height: 100%;
-  background-color: ${bgDefaultColor};
-`;
-
 export const ActionsArea = styled.View`
   justify-content: center;
   align-items: center;

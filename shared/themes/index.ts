@@ -9,6 +9,7 @@ import {
   borderColor,
   forgotPasswordColor,
   borderFormColor,
+  drawerBgColor,
 } from "./colors";
 
 import {
@@ -49,4 +50,5 @@ export {
   borderColor,
   borderFormColor,
   forgotPasswordColor,
+  drawerBgColor,
 };

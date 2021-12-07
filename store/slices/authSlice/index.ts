@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { api } from "../../../shared/services/";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AppDispatch, AppThunk } from "../..";
 
 type Game = {
@@ -12,10 +13,9 @@ type Game = {
 type User = {
   id: number;
   token: string;
-  tokenExpires: string;
   name: string;
   email: string;
-  games: Game[];
+  bets: Game[];
 };
 
 type ApiUser = {
@@ -42,6 +42,58 @@ type AuthSliceState = {
 
 const initialState: AuthSliceState = {
   user: null,
+};
+
+export const asyncGetUser = (token: string): AppThunk => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      const response = await fetch(`${api}/user/my-account`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const user: User = await response.json();
+      dispatch(
+        setUser({
+          id: user.id,
+          email: user.email,
+          bets: [...user.bets],
+          name: user.name,
+          token,
+        })
+      );
+    } catch (e: any) {
+      throw new Error(e.message);
+    }
+  };
+};
+
+export const asyncUpdateAccount = (
+  token: string,
+  name: string,
+  email: string
+): AppThunk => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      await fetch(`${api}/user/update`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          email,
+          name,
+        }),
+      });
+    } catch (e: any) {
+      throw new Error(e.message);
+    }
+  };
 };
 
 export const asyncChangePassword = (
@@ -90,10 +142,10 @@ export const asyncLoginUser = (email: string, password: string): AppThunk => {
             email: user.email,
             name: user.name,
             token: token.token,
-            games: [],
-            tokenExpires: token.expires_at,
+            bets: [],
           })
         );
+        await AsyncStorage.setItem("@token", token.token);
         return;
       }
       if (data.message) {
@@ -134,10 +186,10 @@ export const asyncCreateUser = (
             email: user.email,
             name: user.name,
             token: token.token,
-            games: [],
-            tokenExpires: token.expires_at,
+            bets: [],
           })
         );
+        await AsyncStorage.setItem("@token", token.token);
         return;
       }
       if (data.error) {
@@ -160,8 +212,7 @@ const authSlice = createSlice({
         name: action.payload.name,
         id: action.payload.id,
         token: action.payload.token,
-        tokenExpires: action.payload.tokenExpires,
-        games: [],
+        bets: action.payload.bets,
       };
     },
     logout: (state) => {

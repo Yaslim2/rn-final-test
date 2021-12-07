@@ -5,6 +5,7 @@ const validateForm = (form: {
   isResetPassword?: boolean;
   isSignIn?: boolean;
   isNewPassword?: boolean;
+  isUpdateAccount?: boolean;
   name?: string;
   email?: string;
   password?: string;
@@ -51,6 +52,16 @@ const validateForm = (form: {
     if (error) return false;
   }
 
+  if (form.isUpdateAccount) {
+    const error = handleErrors(
+      titleEmptyForm,
+      textEmptyForm,
+      form.name!.trim() === "",
+      form.email!.trim() === ""
+    );
+    if (error) return false;
+  }
+
   if (!EmailValidator.validate(form.email!) && !form.isNewPassword) {
     const error = handleErrors(
       "Credentials error",
@@ -60,7 +71,7 @@ const validateForm = (form: {
     if (error) return false;
   }
 
-  if (!form.isResetPassword) {
+  if (!form.isResetPassword && !form.isUpdateAccount) {
     if (form.password!.length < 5) {
       const error = handleErrors(
         "Credentials error",

@@ -4,13 +4,13 @@ import DetailsArea from "../../components/DetailsArea";
 import { RootAuthStackParamList } from "../../routes/Auth";
 import {
   Container,
-  ScrollContainer,
   ActionsArea,
   ActionsText,
   MainButtonArea,
   ActionsBoldText,
 } from "./styles";
 import MainButton from "../../components/MainButton";
+import ScrollContainer from "../../components/ScrollContainer";
 
 const Default = (
   props: NativeStackScreenProps<RootAuthStackParamList, "Default">
@@ -24,7 +24,7 @@ const Default = (
   };
 
   return (
-    <ScrollContainer contentContainerStyle={{ flexGrow: 1 }}>
+    <ScrollContainer>
       <Container>
         <DetailsArea />
         <ActionsArea>
