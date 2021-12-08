@@ -5,6 +5,7 @@ import asyncResetPassword from "./asyncResetPassword";
 import generateArray from "./generateArray";
 import sameValues from "./sameValues";
 import generateRandomNumber from "./generateRandomNumber";
+import convertToReal from "./convertToReal";
 export {
   fetchFonts,
   handleErrors,
@@ -13,4 +14,5 @@ export {
   generateArray,
   sameValues,
   generateRandomNumber,
+  convertToReal,
 };

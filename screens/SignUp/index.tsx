@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootAuthStackParamList } from "../../routes/Auth";
 
@@ -7,14 +7,13 @@ import TGLArea from "../../components/TGLArea";
 import Form from "../../components/Form";
 import BackButton from "../../components/BackButton";
 import { useDispatch } from "react-redux";
-import { Alert } from "react-native";
-
 import { asyncCreateUser } from "../../store/slices/authSlice";
 import handleErrors from "../../shared/helpers/handleErrors";
 
 const SignUp = (
   props: NativeStackScreenProps<RootAuthStackParamList, "SignUp">
 ) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
   const handleGoBack = () => {
     props.navigation.goBack();
@@ -25,11 +24,12 @@ const SignUp = (
     name?: string;
   }) => {
     try {
+      setIsLoading(true);
       await dispatch(
         asyncCreateUser(fields.email!, fields.password!, fields.name!)
       );
-      props.navigation.navigate("Default");
     } catch (e: any) {
+      setIsLoading(false);
       handleErrors("Credentials error", e.message, true);
     }
   };
@@ -37,7 +37,7 @@ const SignUp = (
   return (
     <Container>
       <TGLArea>Registration</TGLArea>
-      <Form isSignUp onSubmit={handleSubmit} />
+      <Form loading={isLoading} isSignUp onSubmit={handleSubmit} />
       <BackButton onPress={handleGoBack}>Back</BackButton>
     </Container>
   );

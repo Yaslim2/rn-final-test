@@ -13,6 +13,16 @@ type Game = {
   color: string;
 };
 
+type GameWithId = {
+  type: string;
+  description: string;
+  range: number;
+  price: number;
+  max_number: number;
+  color: string;
+  id: string;
+};
+
 type GameRules = {
   min_cart_value: number;
   types: Game[];
@@ -21,7 +31,7 @@ type GameRules = {
 type GameSliceState = {
   minValue: number | null;
   avaiableGames: Game[];
-  selectedGame: Game | null;
+  selectedGame: GameWithId | null;
   ballsSelected: number[];
   ballsNotSelected: number[];
 };
@@ -56,7 +66,7 @@ const gameSlice = createSlice({
     setGameRules(state, action: PayloadAction<GameRules>) {
       state.minValue = action.payload.min_cart_value;
       state.avaiableGames = action.payload.types;
-      state.selectedGame = action.payload.types[0];
+      state.selectedGame = { ...action.payload.types[0], id: (1).toString() };
       state.ballsNotSelected = generateArray(action.payload.types[0].range);
       state.ballsSelected = [];
     },
@@ -64,8 +74,12 @@ const gameSlice = createSlice({
       const selectedGame = state.avaiableGames.find(
         (game) => game.type === action.payload.item
       );
+      const index = state.avaiableGames.findIndex(
+        (game) => game.type === action.payload.item
+      );
+
       if (selectedGame) {
-        state.selectedGame = selectedGame;
+        state.selectedGame = { ...selectedGame, id: (index + 1).toString() };
         state.ballsSelected = [];
         state.ballsNotSelected = generateArray(selectedGame.range);
       }

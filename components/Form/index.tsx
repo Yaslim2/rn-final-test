@@ -9,8 +9,9 @@ import {
   FormArea,
 } from "./styles";
 import { validateForm } from "../../shared/helpers/index";
-import { Keyboard } from "react-native";
+import { ActivityIndicator, Keyboard } from "react-native";
 import MainButton from "../MainButton";
+import { defaultOrange, primaryGrey } from "../../shared/themes";
 type FieldsType = {
   name?: string;
   email?: string;
@@ -24,10 +25,12 @@ const Form: React.FC<{
   isResetPassword?: boolean;
   isNewPassword?: boolean;
   isUpdateAccount?: boolean;
+  loading: boolean;
 }> = (props) => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
   const {
     isResetPassword,
     isSignUp,
@@ -35,7 +38,7 @@ const Form: React.FC<{
     isNewPassword,
     isUpdateAccount,
   } = props;
-  const handleSubmitForm = () => {
+  const handleSubmitForm = async () => {
     Keyboard.dismiss();
     if (
       !validateForm({
@@ -51,7 +54,8 @@ const Form: React.FC<{
     ) {
       return;
     }
-    props.onSubmit({ name, email, password });
+
+    await props.onSubmit({ name, email, password });
 
     setName("");
     setEmail("");
@@ -196,12 +200,16 @@ const Form: React.FC<{
         <FormContainer behavior="padding">
           {inputs}
           <MainButtonArea>
-            <MainButton onPress={handleSubmitForm}>
-              {props.isSignUp && "Register"}
-              {props.isResetPassword && "Send link"}
-              {props.onResetPassword && "Log in"}
-              {props.isNewPassword && "Change"}
-              {props.isUpdateAccount && "Update"}
+            <MainButton isLoading={props.loading} onPress={handleSubmitForm}>
+              {props.loading ? (
+                <ActivityIndicator color={defaultOrange} size={"large"} />
+              ) : (
+                (props.isSignUp && "Register") ||
+                (props.isResetPassword && "Send link") ||
+                (props.onResetPassword && "Log in") ||
+                (props.isNewPassword && "Change") ||
+                (props.isUpdateAccount && "Update")
+              )}
             </MainButton>
           </MainButtonArea>
         </FormContainer>

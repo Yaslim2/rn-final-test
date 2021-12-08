@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React from "react";
+import React, { useState } from "react";
 import BackButton from "../../components/BackButton";
 import Form from "../../components/Form";
 import TGLArea from "../../components/TGLArea";
@@ -16,11 +16,15 @@ type Data = {
 const ResetPassword = (
   props: NativeStackScreenProps<RootAuthStackParamList, "ResetPassword">
 ) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const handleResetPassword = async (fields: { email?: string }) => {
     try {
+      setIsLoading(true);
       const token = await asyncResetPassword(fields.email!);
+      setIsLoading(false);
       props.navigation.navigate("ChangePassword", { token });
     } catch (e) {
+      setIsLoading(false);
       handleErrors("Error", "User not found in our database.", true);
     }
   };
@@ -31,7 +35,11 @@ const ResetPassword = (
   return (
     <Container>
       <TGLArea>Reset password</TGLArea>
-      <Form isResetPassword onSubmit={handleResetPassword} />
+      <Form
+        loading={isLoading}
+        isResetPassword
+        onSubmit={handleResetPassword}
+      />
       <BackButton onPress={handleGoBack}>Back</BackButton>
     </Container>
   );

@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
 import { useDispatch } from "react-redux";
 import BackButton from "../../components/BackButton";
@@ -15,14 +15,18 @@ import { Container } from "./styles";
 const ChangePassword = (
   props: NativeStackScreenProps<RootAuthStackParamList, "ChangePassword">
 ) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
   const token = props.route.params.token;
 
   const handleChangePassword = async (fields: { password?: string }) => {
     try {
+      setIsLoading(true);
       await dispatch(asyncChangePassword(token, fields.password!));
+      setIsLoading(false);
       props.navigation.popToTop();
     } catch (e: any) {
+      setIsLoading(false);
       handleErrors("Error", e.message, true);
     }
   };
@@ -33,7 +37,7 @@ const ChangePassword = (
   return (
     <Container>
       <TGLArea>New password</TGLArea>
-      <Form isNewPassword onSubmit={handleChangePassword} />
+      <Form loading={isLoading} isNewPassword onSubmit={handleChangePassword} />
       <BackButton onPress={handleGoBack}>Back</BackButton>
     </Container>
   );

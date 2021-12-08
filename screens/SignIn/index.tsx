@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootAuthStackParamList } from "../../routes/Auth";
 import Form from "../../components/Form";
@@ -12,6 +12,7 @@ import { handleErrors } from "../../shared/helpers";
 const SignIn = (
   props: NativeStackScreenProps<RootAuthStackParamList, "SignIn">
 ) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
 
   const handleSubmit = async (fields: {
@@ -19,8 +20,10 @@ const SignIn = (
     password?: string;
   }) => {
     try {
+      setIsLoading(true);
       await dispatch(asyncLoginUser(fields.email!, fields.password!));
     } catch (e: any) {
+      setIsLoading(false);
       handleErrors(
         "Credentials error",
         "Invalid password or email, please check the fields and try again.",
@@ -40,7 +43,11 @@ const SignIn = (
   return (
     <Container>
       <TGLArea>Authentication</TGLArea>
-      <Form onResetPassword={handleResetPassword} onSubmit={handleSubmit} />
+      <Form
+        loading={isLoading}
+        onResetPassword={handleResetPassword}
+        onSubmit={handleSubmit}
+      />
       <BackButton onPress={handleGoBack}>Back</BackButton>
     </Container>
   );

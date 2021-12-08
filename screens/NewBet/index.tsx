@@ -107,7 +107,7 @@ const NewBet = (
       handleErrors(
         "Game error",
         `There is ${ballsToBeAdded} number${
-          ballsToBeAdded === 1 ? "s" : null
+          ballsToBeAdded === 1 ? "" : "s"
         } left to complete your game!`,
         true
       );
@@ -119,6 +119,7 @@ const NewBet = (
 
     const item = {
       id: new Date().getTime().toString(),
+      gameId: selectedGame!.id,
       color: selectedGame!.color,
       numbers: selectedBallsNumber,
       price: selectedGame!.price,
@@ -130,6 +131,7 @@ const NewBet = (
         item,
       })
     );
+    dispatch(clearGame());
   };
 
   const balls = generateArray(selectedGame!.range);
