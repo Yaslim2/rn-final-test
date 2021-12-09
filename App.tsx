@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { fetchFonts } from "./shared/helpers";
+import { fetchFonts } from "@shared/helpers";
 import { NavigationContainer } from "@react-navigation/native";
 import { Provider } from "react-redux";
-import Routes from "./routes";
+import Routes from "@routes/index";
 import AppLoading from "expo-app-loading";
-import store from "./store";
+import store from "@store/index";
 
 const App: React.FC = () => {
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
