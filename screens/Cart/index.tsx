@@ -20,6 +20,7 @@ import MainButton from "../../components/MainButton";
 import CartItem from "../../components/CartItem";
 import EmptyCart from "../../components/EmptyCart";
 import { asyncMakeBet, clearCart } from "../../store/slices/cartSlice";
+import { FlatList, View } from "react-native";
 const Cart = (props: NativeStackScreenProps<RootBetStackNavigator, "Cart">) => {
   const dispatch = useDispatch();
   const minValue = useSelector((state: RootState) => state.game.minValue!);
@@ -62,34 +63,47 @@ const Cart = (props: NativeStackScreenProps<RootBetStackNavigator, "Cart">) => {
     <CartItem key={item.id} item={item} />
   ));
 
+  let flexProperty =
+    cartItemsElements.length === 1
+      ? 0.5
+      : cartItemsElements.length <= 2
+      ? cartItemsElements.length * 0.08 + 0.5
+      : cartItemsElements.length * 0.11 + 0.5;
+
+  flexProperty = flexProperty > 1 ? 1 : flexProperty;
+
   return (
-    <ScrollContainer>
-      <Wrapper>
-        <CartContainer style={{ elevation: 1 }}>
-          <CartArea>
-            <Content>
-              <CartText>CART</CartText>
-              {cartItemsElements.length === 0 ? (
-                <EmptyCart />
-              ) : (
-                <CartItemsArea>{cartItemsElements}</CartItemsArea>
-              )}
-              <CartTotalArea>
-                <CartText>CART </CartText>
-                <TotalText>TOTAL: R$ {realAmount}</TotalText>
-              </CartTotalArea>
-            </Content>
-            {totalAmount !== 0 ? (
-              <MainButtonArea>
-                <MainButton isSaveCart onPress={handleSaveGame}>
-                  Save
-                </MainButton>
-              </MainButtonArea>
-            ) : null}
-          </CartArea>
-        </CartContainer>
-      </Wrapper>
-    </ScrollContainer>
+    <Wrapper onReduce={flexProperty}>
+      <CartContainer style={{ elevation: 1 }}>
+        <CartArea>
+          <Content>
+            <CartText>CART</CartText>
+            {cartItemsElements.length === 0 ? (
+              <EmptyCart />
+            ) : (
+              <CartItemsArea>
+                <FlatList
+                  style={{ width: "100%" }}
+                  data={items}
+                  renderItem={(item) => <CartItem item={item.item} />}
+                />
+              </CartItemsArea>
+            )}
+            <CartTotalArea>
+              <CartText>CART </CartText>
+              <TotalText>TOTAL: R$ {realAmount}</TotalText>
+            </CartTotalArea>
+          </Content>
+          {totalAmount !== 0 ? (
+            <MainButtonArea>
+              <MainButton isSaveCart onPress={handleSaveGame}>
+                Save
+              </MainButton>
+            </MainButtonArea>
+          ) : null}
+        </CartArea>
+      </CartContainer>
+    </Wrapper>
   );
 };
 

@@ -19,7 +19,7 @@ type FieldsType = {
 };
 
 const Form: React.FC<{
-  onSubmit: (fields: FieldsType) => void;
+  onSubmit: (fields: FieldsType) => Promise<void>;
   onResetPassword?: () => void;
   isSignUp?: boolean;
   isResetPassword?: boolean;
@@ -56,10 +56,11 @@ const Form: React.FC<{
     }
 
     await props.onSubmit({ name, email, password });
-
-    setName("");
-    setEmail("");
-    setPassword("");
+    if (props.isUpdateAccount) {
+      setName("");
+      setEmail("");
+      setPassword("");
+    }
   };
 
   let inputs;

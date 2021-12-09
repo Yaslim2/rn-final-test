@@ -9,8 +9,6 @@ import {
 export const Container = styled.View`
   justify-content: center;
   align-items: center;
-  margin-top: 15px;
-  margin-bottom: 15px;
 `;
 
 export const EmptyCartTest = styled.Text`

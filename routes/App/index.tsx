@@ -61,7 +61,6 @@ const BetNavigator = () => {
                 />
               );
             },
-            title: "Recent games",
           };
         }}
       />

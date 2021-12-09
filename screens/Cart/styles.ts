@@ -7,29 +7,40 @@ import {
   bgAccentColor,
 } from "../../shared/themes";
 
-export const Wrapper = styled.View`
-  margin-top: 25px;
-  margin-bottom: 25px;
-  align-items: center;
+type WrapperProps = {
+  onReduce: number;
+};
+
+export const Wrapper = styled.View<WrapperProps>`
+  flex: ${(props) => props.onReduce};
 `;
 
 export const CartContainer = styled.View`
   background-color: #fff;
-  width: 350px;
+  margin: 20px;
+  flex: 1;
   border-radius: 10px;
   border: 1px solid ${borderFormColor};
 `;
 
 export const CartItemsArea = styled.View`
-  width: 80%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  flex: 1;
 `;
 
 export const CartArea = styled.View`
-  width: 100%;
+  flex: 1;
 `;
 
 export const Content = styled.View`
+  flex: 1;
   padding: 20px;
+  justify-content: space-between;
 `;
 
 export const CartText = styled.Text`

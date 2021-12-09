@@ -128,10 +128,19 @@ const gameSlice = createSlice({
       state.ballsSelected = [];
       state.ballsNotSelected = generateArray(state.selectedGame!.range);
     },
+    resetGame(state) {
+      state.selectedGame = { ...state.avaiableGames[0], id: (1).toString() };
+    },
   },
 });
 
-export const { setGameRules, selectGame, selectBall, completeGame, clearGame } =
-  gameSlice.actions;
+export const {
+  setGameRules,
+  selectGame,
+  selectBall,
+  completeGame,
+  clearGame,
+  resetGame,
+} = gameSlice.actions;
 
 export default gameSlice.reducer;

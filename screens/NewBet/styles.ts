@@ -14,6 +14,7 @@ export const Container = styled.View`
 `;
 
 export const NewBetContainer = styled.View`
+  flex: 1;
   margin: 20px;
 `;
 
@@ -59,13 +60,13 @@ export const DescriptionText = styled.Text`
 `;
 
 export const BallsArea = styled.View`
-  margin-top: 20px;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
+  flex: 0.6;
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 export const ActionButtonArea = styled.View`
+  flex: 0.4;
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;

@@ -17,7 +17,7 @@ type GameTypeProps = {
 
 export const ItemContainer = styled.View`
   flex-direction: row;
-  width: 100%;
+  width: 85%;
   margin-top: 15px;
   margin-bottom: 15px;
 `;

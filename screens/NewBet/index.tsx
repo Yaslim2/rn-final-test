@@ -27,32 +27,27 @@ import {
   asyncGetGames,
   clearGame,
   completeGame,
+  resetGame,
   selectBall,
 } from "../../store/slices/gameSlice";
 import { ActivityIndicator } from "react-native";
 import BetActionButton from "../../components/BetActionButton";
 import { addToCart } from "../../store/slices/cartSlice";
+import { FlatList } from "react-native-gesture-handler";
 
 const NewBet = (
   props: NativeStackScreenProps<RootBetStackNavigator, "NewBet">
 ) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
 
   const handleGoToCart = () => {
     props.navigation.navigate("Cart");
   };
 
-  const loadGames = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      await dispatch(asyncGetGames());
-      setIsLoading(false);
-    } catch (e: any) {
-      handleErrors("Error", e.message, true);
-      setIsLoading(false);
-    }
-  }, []);
+  const handleReset = () => {
+    dispatch(resetGame());
+    dispatch(clearGame());
+  };
 
   useEffect(() => {
     props.navigation.setOptions({
@@ -69,7 +64,7 @@ const NewBet = (
         );
       },
     });
-    loadGames();
+    handleReset();
   }, []);
 
   const selectedGame = useSelector(
@@ -101,50 +96,45 @@ const NewBet = (
   };
 
   const handleAddToCart = () => {
-    const ballsToBeAdded = selectedGame!.max_number - selectedBalls.length;
+    try {
+      const ballsToBeAdded = selectedGame!.max_number - selectedBalls.length;
+      if (ballsToBeAdded !== 0) {
+        handleErrors(
+          "Game error",
+          `There is ${ballsToBeAdded} number${
+            ballsToBeAdded === 1 ? "" : "s"
+          } left to complete your game!`,
+          true
+        );
+        return;
+      }
+      const selectedBallsNumber = selectedBalls.map((ball) => Number(ball));
+      selectedBallsNumber.sort((a: number, b: number) => a - b);
 
-    if (ballsToBeAdded !== 0) {
-      handleErrors(
-        "Game error",
-        `There is ${ballsToBeAdded} number${
-          ballsToBeAdded === 1 ? "" : "s"
-        } left to complete your game!`,
-        true
+      const item = {
+        id: new Date().getTime().toString(),
+        gameId: selectedGame!.id,
+        color: selectedGame!.color,
+        numbers: selectedBallsNumber,
+        price: selectedGame!.price,
+        type: selectedGame!.type,
+      };
+
+      dispatch(
+        addToCart({
+          item,
+        })
       );
-      return;
+      dispatch(clearGame());
+    } catch (e: any) {
+      handleErrors("Game error", e.message, true);
     }
-
-    const selectedBallsNumber = selectedBalls.map((ball) => Number(ball));
-    selectedBallsNumber.sort((a: number, b: number) => a - b);
-
-    const item = {
-      id: new Date().getTime().toString(),
-      gameId: selectedGame!.id,
-      color: selectedGame!.color,
-      numbers: selectedBallsNumber,
-      price: selectedGame!.price,
-      type: selectedGame!.type,
-    };
-
-    dispatch(
-      addToCart({
-        item,
-      })
-    );
-    dispatch(clearGame());
   };
 
   const balls = generateArray(selectedGame!.range);
 
-  if (isLoading) {
-    return (
-      <Container>
-        <ActivityIndicator size="large" color={primaryGrey} />
-      </Container>
-    );
-  }
   return (
-    <ScrollContainer>
+    
       <NewBetContainer>
         <NewBetArea>
           <NewBetText>NEW BET FOR </NewBetText>
@@ -158,16 +148,18 @@ const NewBet = (
         <DescriptionText>{selectedGame?.description}</DescriptionText>
 
         <BallsArea>
-          {balls.map((item, index) => {
-            return (
+          <FlatList
+            data={balls}
+            numColumns={5}
+            renderItem={(item) => (
               <Ball
                 color={selectedGame?.color}
                 onSelect={handleSelectBall}
-                key={index}
-                number={item <= 9 ? "0" + item : item}
+                number={item.item <= 9 ? "0" + item.item : item.item}
               />
-            );
-          })}
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
         </BallsArea>
         <ActionButtonArea>
           <BetActionButton onPress={handleCompleteGame}>
@@ -181,7 +173,7 @@ const NewBet = (
           </BetActionButton>
         </ActionButtonArea>
       </NewBetContainer>
-    </ScrollContainer>
+    
   );
 };
 
