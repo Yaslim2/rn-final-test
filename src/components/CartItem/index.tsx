@@ -4,7 +4,6 @@ import { removeFromCart } from "@store/slices/cartSlice";
 import { Ionicons } from "@expo/vector-icons";
 import { secondaryGrey } from "@shared/themes";
 import { convertToReal } from "@shared/helpers";
-
 import {
   ItemContainer,
   ContentContainer,

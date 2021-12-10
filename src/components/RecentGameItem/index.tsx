@@ -32,11 +32,16 @@ const RecentGameItem: React.FC<RecentGameItemProps> = (props) => {
     .locale("pt-br")
     .format("DD/MM/YYYY");
 
+  const numbersWithZero = props.item.choosen_numbers
+    .split(",")
+    .map((item) => (Number(item) <= 9 ? "0" + item : item))
+    .join(", ");
+
   return (
     <ItemContainer>
       <BeforeItem mainColor={color} />
       <ItemArea>
-        <NumbersText>{props.item.choosen_numbers}</NumbersText>
+        <NumbersText>{numbersWithZero}</NumbersText>
         <DatePriceArea>
           <PriceGameText>{date} - </PriceGameText>
           <PriceGameText>R$ {convertToReal(props.item.price)}</PriceGameText>

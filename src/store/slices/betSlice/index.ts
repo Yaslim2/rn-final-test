@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppDispatch, AppThunk } from "@store/types";
 import { api } from "@shared/services";
+import { AppDispatch, AppThunk } from "@store/types";
 import { BetApi, BetSliceState } from "./types";
 
 const initialState: BetSliceState = {
@@ -62,8 +62,12 @@ const betSlice = createSlice({
         state.gameSelected?.push(action.payload.game);
       }
     },
+    resetBet(state) {
+      state.gameSelected = [];
+      state.games = [];
+    },
   },
 });
 
-export const { setBet, selectFilterGame } = betSlice.actions;
+export const { setBet, selectFilterGame, resetBet } = betSlice.actions;
 export default betSlice.reducer;

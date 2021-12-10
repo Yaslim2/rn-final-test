@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ActivityIndicator, Keyboard } from "react-native";
 import {
   FormContainer,
   Input,
@@ -9,8 +10,7 @@ import {
   FormArea,
 } from "./styles";
 import { validateForm } from "@shared/helpers/index";
-import { ActivityIndicator, Keyboard } from "react-native";
-import { MainButton } from "@components/index";
+import MainButton from "../MainButton";
 import { defaultOrange } from "@shared/themes";
 import { FormProps } from "./types";
 
@@ -135,6 +135,7 @@ const Form: React.FC<FormProps> = (props) => {
         <Input
           underlineColorAndroid="transparent"
           value={email}
+          keyboardType="email-address"
           onChangeText={(text) => {
             setEmail(text);
           }}

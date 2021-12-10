@@ -3,8 +3,6 @@ import { TouchableOpacityProps } from "react-native";
 import { TouchableMainButton, ButtonText, RightArrow } from "./styles";
 import { primaryGrey } from "@shared/themes";
 
-// import { Container } from './styles';
-
 const SignUpButton = (props: TouchableOpacityProps) => {
   return (
     <TouchableMainButton {...props}>

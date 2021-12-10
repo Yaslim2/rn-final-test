@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppDispatch, AppThunk } from "@store/types";
 import { sameValues } from "@shared/helpers";
 import { api } from "@shared/services";
-import { CartItem, CartSliceState, CartItemApi } from "./types";
+import { AppDispatch, AppThunk } from "@store/types";
+import { CartItem, CartItemApi, CartSliceState } from "./types";
 
 const initialState: CartSliceState = {
   items: [],

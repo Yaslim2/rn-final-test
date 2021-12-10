@@ -39,6 +39,6 @@ export const ListContainer = styled.View`
   flex: 1;
   background-color: #fff;
   border-radius: 10px;
-
+  padding: 10px;
   border: 1px solid ${borderFormColor};
 `;

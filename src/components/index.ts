@@ -14,6 +14,7 @@ import ScrollContainer from "./ScrollContainer";
 import SignUpButton from "./SignUpButton";
 import TGLArea from "./TGLArea";
 import Loading from "./Loading";
+import EmptyRecentGames from "./EmptyRecentGames";
 
 export {
   BackButton,
@@ -32,4 +33,5 @@ export {
   Form,
   SignUpButton,
   Loading,
+  EmptyRecentGames,
 };

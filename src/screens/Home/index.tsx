@@ -1,18 +1,27 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { ActivityIndicator, FlatList } from "react-native";
+import { FlatList } from "react-native";
 import { RootBetStackNavigator } from "@routes/App/types";
 import { Ionicons } from "@expo/vector-icons";
 import { primaryGrey } from "@shared/themes";
 import { logout } from "@store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { MainButton, FilterButton, RecentGameItem } from "@components/index";
-import { asyncGetBets, selectFilterGame } from "@store/slices/betSlice";
+import {
+  MainButton,
+  FilterButton,
+  RecentGameItem,
+  Loading,
+  EmptyRecentGames,
+} from "@components/index";
+import {
+  resetBet,
+  selectFilterGame,
+  asyncGetBets,
+} from "@store/slices/betSlice";
 import { RootState } from "@store/types";
 import { handleErrors } from "@shared/helpers";
 import {
-  Centered,
   RecentGamesText,
   HomeContainer,
   FilterButtonsArea,
@@ -34,25 +43,31 @@ const Home = (props: NativeStackScreenProps<RootBetStackNavigator, "Home">) => {
   };
 
   const handleLogout = async () => {
-    setIsLoading(true);
-    await AsyncStorage.removeItem("@token");
-    setIsLoading(false);
-    dispatch(logout());
+    try {
+      setIsLoading(true);
+      await AsyncStorage.removeItem("@token");
+      setIsLoading(false);
+      dispatch(logout());
+    } catch (e: any) {
+      handleErrors("Error", e.message, true);
+    }
   };
 
   const handleGetBets = useCallback(async () => {
     try {
       setIsLoading(true);
       await dispatch(asyncGetBets(token, gamesSelected));
-      setIsLoading(false);
     } catch (e: any) {
-      setIsLoading(false);
       handleErrors("Bet error", e.message, true);
     }
+    setIsLoading(false);
   }, [gamesSelected, token]);
 
+  const handleResetBet = useCallback(async () => {
+    dispatch(resetBet());
+  }, []);
+
   useEffect(() => {
-    handleGetBets();
     props.navigation.setOptions({
       headerRight: () => {
         return (
@@ -66,18 +81,19 @@ const Home = (props: NativeStackScreenProps<RootBetStackNavigator, "Home">) => {
       },
       headerShown: true,
     });
+    const resetListener = props.navigation.addListener("focus", handleResetBet);
+    const betListener = props.navigation.addListener("focus", handleGetBets);
     return () => {
       setIsLoading(false);
+      props.navigation.removeListener("focus", resetListener);
+      props.navigation.removeListener("focus", betListener);
     };
-  }, [handleGetBets]);
+  }, [handleGetBets, handleResetBet]);
 
   useEffect(() => {
     handleGetBets();
   }, [gamesSelected, handleGetBets]);
 
-  const selectedGames = useSelector(
-    (state: RootState) => state.bet.gameSelected
-  );
   const avaiableGames = useSelector(
     (state: RootState) => state.game.avaiableGames
   );
@@ -91,7 +107,7 @@ const Home = (props: NativeStackScreenProps<RootBetStackNavigator, "Home">) => {
       <RecentGamesText>Recent games</RecentGamesText>
       <FilterButtonsArea>
         {avaiableGames.map((game) => {
-          const isSelected = selectedGames.find(
+          const isSelected = gamesSelected.find(
             (gameSelected) => gameSelected === game.type
           );
           return (
@@ -112,17 +128,19 @@ const Home = (props: NativeStackScreenProps<RootBetStackNavigator, "Home">) => {
 
       <ListContainer style={{ elevation: 1 }}>
         {!isLoading ? (
-          <FlatList
-            data={bets}
-            removeClippedSubviews
-            refreshing={isLoading}
-            onRefresh={handleGetBets}
-            renderItem={(item) => <RecentGameItem item={item.item} />}
-          />
+          bets.length > 0 ? (
+            <FlatList
+              data={bets}
+              removeClippedSubviews
+              refreshing={isLoading}
+              onRefresh={handleGetBets}
+              renderItem={(item) => <RecentGameItem item={item.item} />}
+            />
+          ) : (
+            <EmptyRecentGames />
+          )
         ) : (
-          <Centered>
-            <ActivityIndicator size="large" color={primaryGrey} />
-          </Centered>
+          <Loading />
         )}
       </ListContainer>
     </HomeContainer>

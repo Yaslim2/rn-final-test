@@ -1,5 +1,5 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect } from "react";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useDispatch, useSelector } from "react-redux";
 import { RootBetStackNavigator } from "@routes/App/types";
 import { RootState } from "@store/types";
@@ -16,8 +16,9 @@ import {
   Wrapper,
 } from "./styles";
 import { MainButton, EmptyCart, CartItem } from "@components/index";
-import { asyncMakeBet, clearCart } from "../../store/slices/cartSlice";
+import { clearCart, asyncMakeBet } from "@store/slices/cartSlice";
 import { FlatList } from "react-native";
+
 const Cart = (props: NativeStackScreenProps<RootBetStackNavigator, "Cart">) => {
   const dispatch = useDispatch();
   const minValue = useSelector((state: RootState) => state.game.minValue!);

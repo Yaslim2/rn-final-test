@@ -10,24 +10,25 @@ type ColorProps = {
 };
 
 export const ItemContainer = styled.View`
-  margin: 15px;
+  padding: 10px;
   flex-direction: row;
+  width: 90%;
 `;
 
 export const BeforeItem = styled.View<ColorProps>`
   width: 7px;
-  height: 90px;
+  height: 113px;
   margin-right: 10px;
   border-radius: 6px;
   background-color: ${(props) => props.mainColor};
 `;
 
-export const ItemArea = styled.View``;
+export const ItemArea = styled.View`
+  justify-content: space-around;
+`;
 
 export const DatePriceArea = styled.View`
   flex-direction: row;
-  margin-top: 5px;
-  margin-bottom: 5px;
 `;
 
 export const NumbersText = styled.Text`

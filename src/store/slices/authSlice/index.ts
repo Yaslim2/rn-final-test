@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { api } from "@shared/services/";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { api } from "@shared/services";
 import { AppDispatch, AppThunk } from "@store/types";
 import { ApiError, ApiUser, AuthSliceState, TokenApi, User } from "./types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const initialState: AuthSliceState = {
   user: null,
@@ -185,6 +185,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser, logout } = authSlice.actions;
+export const { logout, setUser } = authSlice.actions;
 
 export default authSlice.reducer;

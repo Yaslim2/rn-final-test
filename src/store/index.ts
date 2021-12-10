@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { authSlice, cartSlice, gameSlice } from "./slices";
-import betSlice from "./slices/betSlice";
+import { authSlice, cartSlice, gameSlice, betSlice } from "./slices";
 
 const store = configureStore({
   reducer: {
@@ -11,7 +10,9 @@ const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false,
+      immutableCheck: {
+        ignoredPaths: ["ignoredPath", "ignoredNested.one", "ignoreNested.two"],
+      },
     }),
 });
 

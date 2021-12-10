@@ -5,7 +5,7 @@ import { Container } from "./styles";
 import { TGLArea, Form, BackButton } from "@components/index";
 import { useDispatch } from "react-redux";
 import { asyncCreateUser } from "@store/slices/authSlice";
-import handleErrors from "@shared/helpers/handleErrors";
+import { handleErrors } from "@shared/helpers";
 
 const SignUp = (
   props: NativeStackScreenProps<RootAuthStackParamList, "SignUp">

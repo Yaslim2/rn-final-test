@@ -1,16 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppDispatch, AppThunk } from "@store/types";
 import { generateArray, generateRandomNumber } from "@shared/helpers";
 import { api } from "@shared/services";
+import { AppDispatch, AppThunk } from "@store/types";
 import { GameRules, GameSliceState } from "./types";
-
-const initialState: GameSliceState = {
-  minValue: null,
-  avaiableGames: [],
-  selectedGame: null,
-  ballsNotSelected: [],
-  ballsSelected: [],
-};
 
 export const asyncGetGames = (): AppThunk => {
   return async (dispatch: AppDispatch) => {
@@ -25,6 +17,14 @@ export const asyncGetGames = (): AppThunk => {
       throw new Error(e.message);
     }
   };
+};
+
+const initialState: GameSliceState = {
+  minValue: null,
+  avaiableGames: [],
+  selectedGame: null,
+  ballsNotSelected: [],
+  ballsSelected: [],
 };
 
 const gameSlice = createSlice({
