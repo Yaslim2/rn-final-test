@@ -1,33 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { api } from "@shared/services";
 import { AppDispatch, AppThunk } from "@store/types";
-import { ApiError, ApiUser, AuthSliceState, TokenApi, User } from "./types";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthSliceState, User } from "./types";
+import { changePassword, loginUser } from "@shared/services/api/auth";
+import { createUser, getUser, updateAccount } from "@shared/services/api/user";
 
 const initialState: AuthSliceState = {
   user: null,
 };
 
-export const asyncGetUser = (token: string): AppThunk => {
+export const asyncGetUser = (): AppThunk => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response = await fetch(`${api}/user/my-account`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const user: User = await response.json();
+      const user: User = await getUser();
       dispatch(
-        setUser({
-          id: user.id,
-          email: user.email,
-          bets: [...user.bets],
-          name: user.name,
-          token,
-        })
+        setUser(user)
       );
     } catch (e: any) {
       throw new Error(e.message);
@@ -35,25 +21,10 @@ export const asyncGetUser = (token: string): AppThunk => {
   };
 };
 
-export const asyncUpdateAccount = (
-  token: string,
-  name: string,
-  email: string
-): AppThunk => {
-  return async (dispatch: AppDispatch) => {
+export const asyncUpdateAccount = (name: string, email: string): AppThunk => {
+  return async () => {
     try {
-      await fetch(`${api}/user/update`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          email,
-          name,
-        }),
-      });
+      await updateAccount({ email, name });
     } catch (e: any) {
       throw new Error(e.message);
     }
@@ -64,18 +35,9 @@ export const asyncChangePassword = (
   token: string,
   password: string
 ): AppThunk => {
-  return async (dispatch: AppDispatch) => {
+  return async () => {
     try {
-      await fetch(`${api}/reset/${token}`, {
-        method: "POST",
-        body: JSON.stringify({
-          password,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
+      await changePassword({ token, password });
     } catch (e: any) {
       throw new Error(e.message);
     }
@@ -85,35 +47,9 @@ export const asyncChangePassword = (
 export const asyncLoginUser = (email: string, password: string): AppThunk => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response = await fetch(`${api}/login`, {
-        method: "POST",
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
-      const data = await response.json();
-      if (data.user) {
-        const user: ApiUser = data.user;
-        const token: TokenApi = data.token;
-        dispatch(
-          setUser({
-            id: user.id,
-            email: user.email,
-            name: user.name,
-            token: token.token,
-            bets: [],
-          })
-        );
-        await AsyncStorage.setItem("@token", token.token);
-        return;
-      }
-      if (data.message) {
-        throw new Error(data.message);
+      const user = await loginUser({ email, password });
+      if (user) {
+        dispatch(setUser(user));
       }
     } catch (e: any) {
       throw new Error(e.message);
@@ -128,37 +64,9 @@ export const asyncCreateUser = (
 ): AppThunk => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response = await fetch(`${api}/user/create/`, {
-        body: JSON.stringify({
-          email,
-          password,
-          name,
-        }),
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
-      const data = await response.json();
-      if (data.user) {
-        const user: ApiUser = data.user;
-        const token: TokenApi = data.token;
-        dispatch(
-          setUser({
-            id: user.id,
-            email: user.email,
-            name: user.name,
-            token: token.token,
-            bets: [],
-          })
-        );
-        await AsyncStorage.setItem("@token", token.token);
-        return;
-      }
-      if (data.error) {
-        const error: ApiError = data.error;
-        throw new Error(error.message);
+      const user = await createUser({ email, password, name });
+      if (user) {
+        dispatch(setUser(user));
       }
     } catch (e: any) {
       throw new Error(e.message);
@@ -175,7 +83,6 @@ const authSlice = createSlice({
         email: action.payload.email,
         name: action.payload.name,
         id: action.payload.id,
-        token: action.payload.token,
         bets: action.payload.bets,
       };
     },

@@ -1,17 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { generateArray, generateRandomNumber } from "@shared/helpers";
-import { api } from "@shared/services";
+import { getGames } from "@shared/services/api/games";
 import { AppDispatch, AppThunk } from "@store/types";
 import { GameRules, GameSliceState } from "./types";
 
 export const asyncGetGames = (): AppThunk => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response = await fetch(`${api}/cart_games`, {
-        method: "GET",
-        headers: { Accept: "application/json" },
-      });
-      const data = await response.json();
+      const data = await getGames();
       dispatch(setGameRules(data));
     } catch (e: any) {
       throw new Error(e.message);

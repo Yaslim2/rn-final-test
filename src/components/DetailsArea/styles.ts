@@ -1,5 +1,5 @@
 import styled from "styled-components/native";
-import { PoppinsItalicBold, primaryGrey } from "../../shared/themes";
+import { PoppinsItalicBold, primaryGrey } from "@shared/themes";
 
 export const Container = styled.View`
   display: flex;

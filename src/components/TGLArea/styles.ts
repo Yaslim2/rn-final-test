@@ -1,9 +1,5 @@
 import styled from "styled-components/native";
-import {
-  defaultOrange,
-  PoppinsItalicBold,
-  primaryGrey,
-} from "../../shared/themes";
+import { defaultOrange, PoppinsItalicBold, primaryGrey } from "@shared/themes";
 export const TextArea = styled.View`
   justify-content: center;
   align-items: center;

@@ -1,9 +1,5 @@
 import styled from "styled-components/native";
-import {
-  PoppinsItalicBold,
-  PoppinsLight,
-  secondaryGrey,
-} from "../../shared/themes";
+import { PoppinsItalicBold, PoppinsLight, secondaryGrey } from "@shared/themes";
 
 type ColorProps = {
   mainColor?: string;

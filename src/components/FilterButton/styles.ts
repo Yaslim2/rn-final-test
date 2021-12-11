@@ -1,5 +1,5 @@
 import styled from "styled-components/native";
-import { RobotoItalicBold } from "../../shared/themes";
+import { RobotoItalicBold } from "@shared/themes";
 import { ActiveStyleProps } from "./types";
 
 export const Button = styled.TouchableOpacity<ActiveStyleProps>`
@@ -14,6 +14,7 @@ export const Button = styled.TouchableOpacity<ActiveStyleProps>`
   text-align: center;
   border-radius: 100px;
   margin: 0px 5px;
+  margin-bottom: 13px;
 `;
 
 export const TextButton = styled.Text<ActiveStyleProps>`

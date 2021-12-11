@@ -5,7 +5,7 @@ import {
   PoppinsLight,
   primaryGrey,
   bgAccentColor,
-} from "../../shared/themes";
+} from "@shared/themes";
 
 type WrapperProps = {
   onReduce: number;

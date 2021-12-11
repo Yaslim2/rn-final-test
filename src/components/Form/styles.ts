@@ -6,7 +6,7 @@ import {
   borderColor,
   forgotPasswordColor,
   borderFormColor,
-} from "../../shared/themes";
+} from "@shared/themes";
 
 export const FormContainer = styled.KeyboardAvoidingView`
   width: 100%;

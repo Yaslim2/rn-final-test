@@ -25,12 +25,12 @@ const Routes: React.FC = () => {
     }
   }, []);
 
-  const loadToken = useCallback(async () => {
+  const loadUser = useCallback(async () => {
     try {
       setIsLoading(true);
       const token = await AsyncStorage.getItem("@token");
       if (token) {
-        await dispatch(asyncGetUser(token));
+        await dispatch(asyncGetUser());
       }
       setIsLoading(false);
     } catch (e: any) {
@@ -41,19 +41,19 @@ const Routes: React.FC = () => {
 
   useEffect(() => {
     const asyncActions = async () => {
-      await loadToken();
+      await loadUser();
       await loadGames();
     };
     asyncActions();
-  }, [loadGames, loadToken]);
+  }, [loadGames, loadUser]);
 
-  const token = useSelector((state: RootState) => state.auth.user?.token);
+  const user = useSelector((state: RootState) => state.auth.user);
 
   if (isLoading) {
     return <Loading />;
   }
 
-  return token ? <AppNavigator /> : <AuthNavigator />;
+  return user ? <AppNavigator /> : <AuthNavigator />;
 };
 
 export default Routes;

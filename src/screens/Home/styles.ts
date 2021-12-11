@@ -3,7 +3,7 @@ import {
   borderFormColor,
   PoppinsItalicBold,
   primaryGrey,
-} from "../../shared/themes";
+} from "@shared/themes";
 
 export const Centered = styled.View`
   flex: 1;
@@ -26,7 +26,6 @@ export const FilterButtonsArea = styled.View`
   flex-wrap: wrap;
   flex-direction: row;
   margin-top: 13px;
-  margin-bottom: 13px;
 `;
 
 export const MainButtonHomeArea = styled.View`

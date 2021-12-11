@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
-import { RobotoBold } from "../../shared/themes";
-import { ballColor } from "../../shared/themes/colors";
+import { RobotoBold } from "@shared/themes";
+import { ballColor } from "@shared/themes/colors";
 import { BallColorStyle } from "./types";
 
 export const BallTouchable = styled.TouchableNativeFeedback``;

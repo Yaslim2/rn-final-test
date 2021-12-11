@@ -1,5 +1,5 @@
 import styled from "styled-components/native";
-import { PoppinsItalicRegular, primaryGrey } from "../../shared/themes";
+import { PoppinsItalicRegular, primaryGrey } from "@shared/themes";
 
 export const Container = styled.View`
   justify-content: center;

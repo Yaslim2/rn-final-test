@@ -1,11 +1,5 @@
 import styled from "styled-components/native";
-import {
-  defaultOrange,
-  PoppinsBold,
-  PoppinsItalicBold,
-  bgAccentColor,
-  defaultGreen,
-} from "../../shared/themes";
+import { defaultOrange, PoppinsItalicBold, defaultGreen } from "@shared/themes";
 import { Ionicons } from "@expo/vector-icons";
 
 type ButtonTextProps = {

@@ -15,12 +15,11 @@ const Account = (
 ) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const token = useSelector((state: RootState) => state.auth.user!.token);
 
   const handleUpdate = async (fields: { name?: string; email?: string }) => {
     try {
       setIsLoading(true);
-      await dispatch(asyncUpdateAccount(token, fields.name!, fields.email!));
+      await dispatch(asyncUpdateAccount(fields.name!, fields.email!));
       setIsLoading(false);
       props.navigation.navigate("Bets");
     } catch (e: any) {

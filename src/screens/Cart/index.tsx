@@ -25,7 +25,7 @@ const Cart = (props: NativeStackScreenProps<RootBetStackNavigator, "Cart">) => {
 
   const items = useSelector((state: RootState) => state.cart.items);
   const totalAmount = useSelector((state: RootState) => state.cart.totalAmount);
-  const token = useSelector((state: RootState) => state.auth.user!.token);
+
   useEffect(() => {
     props.navigation.setOptions({
       headerShown: true,
@@ -40,7 +40,7 @@ const Cart = (props: NativeStackScreenProps<RootBetStackNavigator, "Cart">) => {
   const handleSaveGame = async () => {
     try {
       if (totalAmount >= minValue) {
-        await dispatch(asyncMakeBet(token, itemsApi));
+        await dispatch(asyncMakeBet(itemsApi));
         dispatch(clearCart());
         props.navigation.goBack();
       } else {

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { sameValues } from "@shared/helpers";
-import { api } from "@shared/services";
+import { makeNewBet } from "@shared/services/api/bets";
 import { AppDispatch, AppThunk } from "@store/types";
 import { CartItem, CartItemApi, CartSliceState } from "./types";
 
@@ -9,19 +9,10 @@ const initialState: CartSliceState = {
   totalAmount: 0,
 };
 
-export const asyncMakeBet = (token: string, items: CartItemApi[]): AppThunk => {
+export const asyncMakeBet = (items: CartItemApi[]): AppThunk => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response = await fetch(`${api}/bet/new-bet`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ games: items }),
-      });
-      const data = await response.json();
+      await makeNewBet({ games: items });
       dispatch(clearCart());
     } catch (e: any) {
       throw new Error(e.message);

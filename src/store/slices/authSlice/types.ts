@@ -7,7 +7,6 @@ export type Game = {
 
 export type User = {
   id: number;
-  token: string;
   name: string;
   email: string;
   bets: Game[];

@@ -1,5 +1,5 @@
 import styled from "styled-components/native";
-import { defaultOrange, PoppinsItalicBold } from "../../shared/themes";
+import { defaultOrange, PoppinsItalicBold } from "@shared/themes";
 
 export const PatternTouchable = styled.TouchableOpacity`
   width: 100%;

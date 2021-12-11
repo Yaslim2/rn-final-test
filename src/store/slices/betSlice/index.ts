@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { api } from "@shared/services";
+import { getBets } from "@shared/services/api/bets";
 import { AppDispatch, AppThunk } from "@store/types";
 import { BetApi, BetSliceState } from "./types";
 
@@ -8,35 +8,11 @@ const initialState: BetSliceState = {
   games: [],
 };
 
-export const asyncGetBets = (token: string, filters: string[]): AppThunk => {
+export const asyncGetBets = (filters: string[]): AppThunk => {
   return async (dispatch: AppDispatch) => {
     try {
-      let url = `${api}/bet/all-bets`;
-      filters.forEach((game, index) => {
-        if (index === 0) {
-          url += `?type%5B%5D=${game}`;
-        } else {
-          url += `&type%5B%5D=${game}`;
-        }
-      });
-      const response = await fetch(`${url}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data: BetApi[] = await response.json();
-      const newData = [...data];
-
-      newData.sort((a: BetApi, b: BetApi) => {
-        const dateOne = new Date(a.created_at).getTime();
-        const dateTwo = new Date(b.created_at).getTime();
-        return dateTwo - dateOne;
-      });
-
-      dispatch(setBet({ bets: newData }));
+      const bets = await getBets(filters);
+      dispatch(setBet({ bets }));
     } catch (e: any) {
       throw new Error(e.message);
     }

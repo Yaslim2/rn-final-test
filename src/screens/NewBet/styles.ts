@@ -5,7 +5,7 @@ import {
   PoppinsItalicRegular,
   primaryGrey,
   secondaryGrey,
-} from "../../shared/themes";
+} from "@shared/themes";
 
 export const Container = styled.View`
   flex: 1;

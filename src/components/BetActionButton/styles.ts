@@ -1,5 +1,5 @@
 import styled from "styled-components/native";
-import { defaultGreen, RobotoBold } from "../../shared/themes";
+import { defaultGreen, RobotoBold } from "@shared/themes";
 import { AddToCartStyle } from "./types";
 
 export const Touchable = styled.TouchableOpacity``;

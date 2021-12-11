@@ -30,13 +30,15 @@ import {
 } from "./styles";
 
 const Home = (props: NativeStackScreenProps<RootBetStackNavigator, "Home">) => {
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const token = useSelector((state: RootState) => state.auth.user!.token);
   const bets = useSelector((state: RootState) => state.bet.games);
   const gamesSelected = useSelector(
     (state: RootState) => state.bet.gameSelected
   );
-  const dispatch = useDispatch();
+  const avaiableGames = useSelector(
+    (state: RootState) => state.game.avaiableGames
+  );
 
   const handleNewBet = () => {
     props.navigation.navigate("NewBet");
@@ -56,12 +58,12 @@ const Home = (props: NativeStackScreenProps<RootBetStackNavigator, "Home">) => {
   const handleGetBets = useCallback(async () => {
     try {
       setIsLoading(true);
-      await dispatch(asyncGetBets(token, gamesSelected));
+      await dispatch(asyncGetBets(gamesSelected));
     } catch (e: any) {
       handleErrors("Bet error", e.message, true);
     }
     setIsLoading(false);
-  }, [gamesSelected, token]);
+  }, [gamesSelected]);
 
   const handleResetBet = useCallback(async () => {
     dispatch(resetBet());
@@ -93,10 +95,6 @@ const Home = (props: NativeStackScreenProps<RootBetStackNavigator, "Home">) => {
   useEffect(() => {
     handleGetBets();
   }, [gamesSelected, handleGetBets]);
-
-  const avaiableGames = useSelector(
-    (state: RootState) => state.game.avaiableGames
-  );
 
   const onFilter = (item: string) => {
     dispatch(selectFilterGame({ game: item }));

@@ -3,7 +3,7 @@ import {
   PoppinsItalicBold,
   PoppinsLight,
   secondaryGrey,
-} from "../../shared/themes";
+} from "@shared/themes";
 import { ColorProps } from "./types";
 
 export const ItemContainer = styled.View`

@@ -72,7 +72,7 @@ const validateForm = (form: {
     if (error) return false;
   }
 
-  if (!form.isResetPassword && !form.isUpdateAccount) {
+  if (form.isNewPassword || form.isSignUp) {
     if (form.password!.length < 5) {
       const error = handleErrors(
         "Credentials error",
